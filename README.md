@@ -17,9 +17,9 @@ Copy `.env.example` to `.env.local` and fill it in. On Vercel, add the same valu
 | --- | --- |
 | `DATABASE_URL` | Postgres connection string. Vercel fills this in when you add a Neon database. |
 | `SETUP_CODE` | A phrase you choose. It's needed once, at `/setup`, to create the first manager. |
-| `APP_URL` | The site's address, for example `https://shiftchange.vercel.app`. Used in emailed links. |
+| `APP_URL` | The site's address, used in emailed links. On Vercel it defaults to the project's main address. |
 | `RESEND_API_KEY`, `EMAIL_FROM` | Optional. Without them, managers get invite and reset links to send themselves. |
-| `DEMO_MODE` | Set to `1` for a demo copy. The sign-in page lists sample people, and no email is sent. |
+| `DEMO_MODE` | Set to `1` for a demo copy. The first build fills an empty database with sample people, the sign-in page lists them, and no email is sent. |
 | `DEMO_PASSWORD` | Optional. The password the sample people use in demo mode. |
 
 ## Running it locally

@@ -1,10 +1,13 @@
 // Fills an empty database with made-up staff and shifts, for showing the app to someone.
-// Usage: DATABASE_URL=... node scripts/seed-demo.mjs [--reset]
-// --reset wipes everything first. Every sample account uses DEMO_PASSWORD (default below).
+// Usage: DATABASE_URL=... node scripts/seed-demo.mjs [--reset | --auto]
+// --reset wipes everything first. --auto (used by the build) only runs when DEMO_MODE=1 and
+// the database is empty. Every sample account uses DEMO_PASSWORD (default below).
 import bcrypt from "bcryptjs";
 import postgres from "postgres";
 
+const auto = process.argv.includes("--auto");
 const url = process.env.DATABASE_URL;
+if (auto && (process.env.DEMO_MODE !== "1" || !url)) process.exit(0);
 if (!url) throw new Error("Set DATABASE_URL first.");
 const password = process.env.DEMO_PASSWORD || "vancouver-demo";
 const sql = postgres(url, { max: 1, onnotice: () => {} });
@@ -37,8 +40,8 @@ try {
   }
   const [{ n }] = await sql`SELECT count(*)::int AS n FROM users`;
   if (n > 0) {
-    console.log("seed-demo: the database already has people in it. Use --reset to wipe it first.");
-    process.exit(1);
+    console.log("seed-demo: the database already has people in it" + (auto ? ", leaving it as is." : ". Use --reset to wipe it first."));
+    process.exit(auto ? 0 : 1);
   }
   const hash = await bcrypt.hash(password, 12);
   await sql.begin(async (tx) => {

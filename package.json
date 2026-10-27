@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/migrate.mjs && next build",
+    "build": "node scripts/migrate.mjs && node scripts/seed-demo.mjs --auto && next build",
     "start": "next start",
     "migrate": "node scripts/migrate.mjs",
     "typecheck": "tsc --noEmit",

@@ -7,7 +7,9 @@ export function emailEnabled() {
 }
 
 export function appUrl(path = "") {
-  const base = (process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
+  // On Vercel, fall back to the project's main address when APP_URL isn't set.
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  const base = (process.env.APP_URL || vercel || "http://localhost:3000").replace(/\/$/, "");
   return base + path;
 }
 
